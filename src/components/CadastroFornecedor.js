@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, Image, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import { TouchableOpacity } from 'react-native';
+import styles from '../styles/CadastroFornecedorStyles';
 
 const CadastroFornecedor = ({ onCadastro }) => {
     const [nome, setNome] = useState('');
@@ -23,25 +25,21 @@ const CadastroFornecedor = ({ onCadastro }) => {
         }
     };
 
-
-
     const handleCadastro = () => {
         if (nome && endereco && telefone && imagemUri) {
-          onCadastro({ nome, endereco, telefone, imagemUri });
-          setNome('');
-          setEndereco('');
-          setTelefone('');
-          setImagemUri(null); // Limpando após cadastro
+            onCadastro({ nome, endereco, telefone, imagemUri });
+            setNome('');
+            setEndereco('');
+            setTelefone('');
+            setImagemUri(null);
         } else {
-          alert('Por favor, preencha todos os campos e selecione uma imagem.');
+            alert('Por favor, preencha todos os campos e selecione uma imagem.');
         }
-      };
-      
-
+    };
 
     return (
         <View style={styles.container}>
-            <Text>Cadastro de Fornecedor</Text>
+            <Text style={styles.titulo}>Cadastro de Fornecedor</Text>
             <TextInput
                 placeholder="Nome do Fornecedor"
                 value={nome}
@@ -60,32 +58,17 @@ const CadastroFornecedor = ({ onCadastro }) => {
                 onChangeText={setTelefone}
                 style={styles.input}
             />
-            <Button title="Escolher Imagem" onPress={escolherImagem} />
+            <TouchableOpacity style={styles.button} onPress={escolherImagem}>
+                <Text style={styles.buttonText}>Escolher Imagem</Text>
+            </TouchableOpacity>
             {imagemUri && (
-                <Image source={{ uri: imagemUri }} style={{ width: 100, height: 100 }} />
+                <Image source={{ uri: imagemUri }} style={styles.image} />
             )}
-
-            <Button title="Cadastrar" onPress={handleCadastro} />
-
+            <TouchableOpacity style={styles.button} onPress={handleCadastro}>
+                <Text style={styles.buttonText}>Cadastrar</Text>
+            </TouchableOpacity>
         </View>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        padding: 10,
-    },
-    input: {
-        height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
-        marginBottom: 10,
-    },
-    image: {
-        width: 100,
-        height: 100,
-        marginBottom: 10,
-    },
-});
 
 export default CadastroFornecedor;

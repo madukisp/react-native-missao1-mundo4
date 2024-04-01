@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, FlatList, Image, StyleSheet, Button } from 'react-native';
+import { View, Text, FlatList, Image, TouchableOpacity } from 'react-native';
+import styles from '../styles/ListagemFornecedoresStyles';
 
-const ListagemFornecedores = ({ fornecedores, onExcluir, onAtualizar }) => {
+const ListagemFornecedores = ({ fornecedores, onExcluir }) => {
   const renderItem = ({ item }) => {
     return (
       <View style={styles.item}>
@@ -11,9 +12,9 @@ const ListagemFornecedores = ({ fornecedores, onExcluir, onAtualizar }) => {
           <Text>{item.endereco}</Text>
           <Text>{item.telefone}</Text>
         </View>
-        <Button title="Excluir" onPress={() => onExcluir(item.id)} />
-        <Button title="Atualizar" onPress={() => onAtualizar(item.id)} />
-
+        <TouchableOpacity style={styles.excluirButton} onPress={() => onExcluir(item.id)}>
+          <Text style={styles.excluirButtonText}>Excluir</Text>
+        </TouchableOpacity>
       </View>
     );
   };
@@ -26,24 +27,5 @@ const ListagemFornecedores = ({ fornecedores, onExcluir, onAtualizar }) => {
     />
   );
 };
-
-const styles = StyleSheet.create({
-  item: {
-    flexDirection: 'row',
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: 'gray',
-    alignItems: 'center',
-  },
-  image: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginRight: 10,
-  },
-  textContainer: {
-    flex: 1,
-  },
-});
 
 export default ListagemFornecedores;

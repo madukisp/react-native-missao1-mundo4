@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Alert } from 'react-native';
+import { View, Alert } from 'react-native';
 import CadastroFornecedor from './src/components/CadastroFornecedor';
 import ListagemFornecedores from './src/components/ListagemFornecedores';
+import styles from './src/styles/AppStyles';
 
 const App = () => {
   const [fornecedores, setFornecedores] = useState([]);
@@ -32,39 +33,19 @@ const App = () => {
     );
   };
 
-  const atualizarFornecedor = (fornecedor) => {
-    setFornecedores((currentFornecedores) => 
-      currentFornecedores.map((f) => (f.id === fornecedor.id ? fornecedor : f))
-    );
-    setFornecedorEditando(null);
-  };
-
-  const iniciarEdicaoFornecedor = (id) => {
-    const fornecedor = fornecedores.find((f) => f.id === id);
-    setFornecedorEditando(fornecedor);
-  };
-
   return (
     <View style={styles.container}>
       <CadastroFornecedor 
         onCadastro={adicionarFornecedor} 
         fornecedorEditando={fornecedorEditando}
-        onAtualizarFornecedor={atualizarFornecedor}
       />
       <ListagemFornecedores
         fornecedores={fornecedores}
         onExcluir={excluirFornecedor}
-        onAtualizar={iniciarEdicaoFornecedor}
       />
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 50,
-  },
-});
-
 export default App;
+

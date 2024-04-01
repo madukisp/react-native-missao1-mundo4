@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Image, View, Platform, StyleSheet } from 'react-native';
+import { Button, Image, View, Platform } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import { styles } from '../styles/FornecedorProfileStyles';
 
 
 export default function FornecedorProfile() {
@@ -53,14 +54,4 @@ export default function FornecedorProfile() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  image: {
-    width: 200,
-    height: 200,
-  },
-});
+
