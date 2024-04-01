@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10, 
     paddingHorizontal: 20, 
     marginHorizontal: 20, 
+    borderRadius: 8,
   },
   image: {
     width: 40,
@@ -26,6 +27,7 @@ const styles = StyleSheet.create({
   textContainer: {
     flex: 1,
     justifyContent: 'center',
+    
   },
   excluirButton: {
     backgroundColor: '#ea3333',
