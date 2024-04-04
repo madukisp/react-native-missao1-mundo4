@@ -1,51 +1,54 @@
-import React, { useState } from 'react';
-import { View, Alert } from 'react-native';
+import React from 'react';
+import { FornecedoresProvider } from './src/context/FornecedoresContext';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { StyleSheet } from 'react-native';
+
 import CadastroFornecedor from './src/components/CadastroFornecedor';
+import TelaInicial from './src/components/TelaInicial';
 import ListagemFornecedores from './src/components/ListagemFornecedores';
-import styles from './src/styles/AppStyles';
+import FornecedorProfile from './src/components/FornecedorProfile';
+
+const Stack = createStackNavigator();
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: 50,
+    backgroundColor: '#b595d9',
+    color: '#fff',
+  },
+});
 
 const App = () => {
-  const [fornecedores, setFornecedores] = useState([]);
-  const [fornecedorEditando, setFornecedorEditando] = useState(null);
-
-  const adicionarFornecedor = (fornecedor) => {
-    setFornecedores((currentFornecedores) => [
-      ...currentFornecedores,
-      { ...fornecedor, id: Math.random().toString() },
-    ]);
-  };
-
-  const excluirFornecedor = (id) => {
-    Alert.alert(
-      "Confirmar exclusão",
-      "Deseja realmente excluir este fornecedor?",
-      [
-        { text: "Cancelar" },
-        {
-          text: "Excluir",
-          onPress: () => {
-            setFornecedores((currentFornecedores) =>
-              currentFornecedores.filter((fornecedor) => fornecedor.id !== id)
-            );
-          },
-        },
-      ]
-    );
-  };
-
   return (
-    <View style={styles.container}>
-      <CadastroFornecedor 
-        onCadastro={adicionarFornecedor} 
-        fornecedorEditando={fornecedorEditando}
-      />
-      <ListagemFornecedores
-        fornecedores={fornecedores}
-        onExcluir={excluirFornecedor}
-      />
-    </View>
+    <FornecedoresProvider>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="TelaInicial">
+          <Stack.Screen
+            name="TelaInicial"
+            component={TelaInicial}
+            options={{ title: 'Tela Inicial' }}
+          />
+          <Stack.Screen
+            name="CadastroFornecedor"
+            component={CadastroFornecedor}
+            options={{ title: 'Cadastro de Fornecedor' }}
+          />
+          <Stack.Screen
+            name="ListagemFornecedores"
+            component={ListagemFornecedores}
+            options={{ title: 'Listagem de Fornecedores' }}
+          />
+          <Stack.Screen
+            name="PerfilFornecedor"
+            component={FornecedorProfile}
+            options={{ title: 'Perfil do Fornecedor' }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </FornecedoresProvider>
   );
 };
 
 export default App;
-
