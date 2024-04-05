@@ -20,15 +20,15 @@ const CadastroFornecedor = ({ navigation, route }) => {
   }, [fornecedorParaEditar, navigation]);
 
   const escolherImagem = async () => {
-    let resultado = await ImagePicker.launchImageLibraryAsync({
+    let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
     });
-
-    if (!resultado.cancelled && resultado.assets) {
-      setImagemUri(resultado.assets[0].uri);
+  
+    if (!result.cancelled) {
+      setImagemUri(result.assets[0].uri);
     }
   };
 

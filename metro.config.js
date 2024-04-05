@@ -1,10 +1,3 @@
-module.exports = {
-    transformer: {
-      getTransformOptions: async () => ({
-        transform: {
-          experimentalImportSupport: false,
-          inlineRequires: false,
-        },
-      }),
-    },
-  };
+const { getDefaultConfig } = require('@expo/metro-config');
+
+module.exports = getDefaultConfig(__dirname);
