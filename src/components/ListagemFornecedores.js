@@ -6,21 +6,26 @@ import { styles } from './styles';
 const ListagemFornecedores = ({ navigation }) => {
   const { fornecedores, excluirFornecedor } = useContext(FornecedoresContext);
 
-  const sectionData = Object.entries(fornecedores.reduce((acc, fornecedor) => {
-    const initial = fornecedor.nome[0].toUpperCase();
-    if (!acc[initial]) {
-      acc[initial] = [];
-    }
-    acc[initial].push(fornecedor);
-    return acc;
-  }, {}))
+  
+  const sectionData = Object.entries(
+    fornecedores.reduce((acc, fornecedor) => {
+      const initial = fornecedor.nome[0].toUpperCase();
+      if (!acc[initial]) {
+        acc[initial] = [];
+      }
+      acc[initial].push(fornecedor);
+      return acc;
+    }, {})
+  )
   .sort(([a], [b]) => a.localeCompare(b))
   .map(([title, data]) => ({ title, data }));
 
+  
   const handleAlterarPress = fornecedor => {
     navigation.navigate('CadastroFornecedor', { fornecedor });
   };
 
+  
   const handleExcluirPress = id => {
     Alert.alert(
       'Excluir Fornecedor',
@@ -32,14 +37,12 @@ const ListagemFornecedores = ({ navigation }) => {
     );
   };
 
+  
   const renderItem = ({ item }) => (
     <View style={styles.itemContainer}>
       <View style={styles.fornecedorImagemWrapper}>
         <View style={styles.fornecedorImagemBorder}>
-          <Image
-            source={{ uri: item.imagemUri }}
-            style={styles.imagemFornecedor}
-          />
+          <Image source={{ uri: item.imagemUri }} style={styles.imagemFornecedor} />
         </View>
       </View>
       <View style={styles.infoContainer}>
@@ -57,7 +60,6 @@ const ListagemFornecedores = ({ navigation }) => {
       </View>
     </View>
   );
-  
 
   return (
     <SectionList
@@ -66,7 +68,7 @@ const ListagemFornecedores = ({ navigation }) => {
       renderSectionHeader={({ section: { title } }) => (
         <Text style={styles.sectionHeader}>{title}</Text>
       )}
-      keyExtractor={(item, index) => `list-item-${index}`}
+      keyExtractor={(item, index) => `list-item-${item.id}-${index}`}
     />
   );
 };

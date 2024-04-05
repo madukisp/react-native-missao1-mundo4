@@ -87,6 +87,27 @@ export const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'flex-end',
   },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+    backgroundColor: "rgba(0,0,0,0.5)", // Fundo semitransparente
+  },
+  contactItem: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+  },
+  contactName: {
+    fontSize: 18, // Tamanho maior para os nomes
+    fontWeight: 'bold',
+  },
+  contactNumber: {
+    fontSize: 16, // Tamanho um pouco menor para os números de telefone
+    color: 'gray',
+  },
   container: {
     alignItems: 'center',
     backgroundColor: colors.background,
@@ -195,6 +216,21 @@ export const styles = StyleSheet.create({
     borderWidth: 2,
     justifyContent: 'center',
     padding: 2,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5
   },
   nome: {
     color: colors.title,
