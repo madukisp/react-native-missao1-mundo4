@@ -2,29 +2,33 @@ import React from 'react';
 import { FornecedoresProvider } from './src/context/FornecedoresContext';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { StyleSheet } from 'react-native';
 
 import CadastroFornecedor from './src/components/CadastroFornecedor';
 import TelaInicial from './src/components/TelaInicial';
 import ListagemFornecedores from './src/components/ListagemFornecedores';
 import FornecedorProfile from './src/components/FornecedorProfile';
+import { styles, colors } from './src/components/styles';
+
+
 
 const Stack = createStackNavigator();
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 50,
-    backgroundColor: '#b595d9',
-    color: '#fff',
-  },
-});
 
 const App = () => {
   return (
     <FornecedoresProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="TelaInicial">
+        <Stack.Navigator
+          initialRouteName="TelaInicial"
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: colors.background, 
+            },
+            headerTintColor: colors.text, 
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}
+        >
           <Stack.Screen
             name="TelaInicial"
             component={TelaInicial}
@@ -40,6 +44,7 @@ const App = () => {
             component={ListagemFornecedores}
             options={{ title: 'Listagem de Fornecedores' }}
           />
+          {}
           <Stack.Screen
             name="PerfilFornecedor"
             component={FornecedorProfile}

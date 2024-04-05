@@ -1,23 +1,13 @@
 import React from 'react';
-import { View, Image, StyleSheet } from 'react-native';
+import { View, Image } from 'react-native';
+import { styles, colors } from './styles';
 
 const ImagemFornecedor = ({ uri }) => {
   return (
-    <View style={styles.container}>
-      <Image source={{ uri }} style={styles.image} />
+    <View style={styles.containerImagemFornecedor}> {}
+      <Image source={{ uri }} style={styles.imagemFornecedor} /> {}
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    padding: 10,
-  },
-  image: {
-    width: 100,
-    height: 100,
-  },
-});
 
 export default ImagemFornecedor;

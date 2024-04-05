@@ -1,7 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { View, Text, TextInput, Image, TouchableOpacity, Alert, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Image, TouchableOpacity, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { FornecedoresContext } from '../context/FornecedoresContext';
+import { styles, colors } from './styles';
 
 const CadastroFornecedor = ({ navigation, route }) => {
   const { adicionarFornecedor, atualizarFornecedor } = useContext(FornecedoresContext);
@@ -25,16 +26,11 @@ const CadastroFornecedor = ({ navigation, route }) => {
       aspect: [4, 3],
       quality: 1,
     });
-  
-    // Certifique-se de que esta linha usa 'cancelled' em minúsculas.
+
     if (!resultado.cancelled && resultado.assets) {
       setImagemUri(resultado.assets[0].uri);
     }
   };
-  
-  
-  
-  
 
   const handleSalvar = () => {
     if (!nome || !endereco || !telefone || !imagemUri) {
@@ -54,74 +50,43 @@ const CadastroFornecedor = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.titulo}>Cadastro de Fornecedor</Text>
+
+      {}
       <TextInput
         placeholder="Nome do Fornecedor"
         value={nome}
         onChangeText={setNome}
-        style={styles.input}
+        style={[styles.input, { width: '80%', alignSelf: 'center' }]}
       />
       <TextInput
         placeholder="Endereço"
         value={endereco}
         onChangeText={setEndereco}
-        style={styles.input}
+        style={[styles.input, { width: '80%', alignSelf: 'center' }]}
       />
       <TextInput
         placeholder="Telefone"
         value={telefone}
         onChangeText={setTelefone}
-        style={styles.input}
+        style={[styles.input, { width: '80%', alignSelf: 'center' }]}
       />
-      <TouchableOpacity style={styles.button} onPress={escolherImagem}>
-        <Text style={styles.buttonText}>Escolher Imagem</Text>
+
+      <TouchableOpacity style={styles.botao} onPress={escolherImagem}>
+        <Text style={styles.textoBotao}>Escolher Imagem</Text>
       </TouchableOpacity>
+
+      {}
       {imagemUri ? (
-        <Image source={{ uri: imagemUri }} style={styles.image} />
+        <View style={styles.imagemEscolhida}>
+          <Image source={{ uri: imagemUri }} style={styles.imagemEscolhidaInner} />
+        </View>
       ) : null}
-      <TouchableOpacity style={styles.button} onPress={handleSalvar}>
-        <Text style={styles.buttonText}>{fornecedorParaEditar ? 'Atualizar' : 'Cadastrar'}</Text>
+
+      <TouchableOpacity style={styles.botao} onPress={handleSalvar}>
+        <Text style={styles.textoBotao}>{fornecedorParaEditar ? 'Atualizar' : 'Cadastrar'}</Text>
       </TouchableOpacity>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        padding: 10,
-        color: '#fff',
-    },
-    input: {
-        height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
-        marginBottom: 10,
-        backgroundColor: '#fff',
-        padding: 10,
-        borderRadius: 8,
-    },
-    image: {
-        width: 100,
-        height: 100,
-        marginBottom: 10,
-    },
-    titulo: {
-        color: '#fff',
-        fontSize: 20,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        marginBottom: 10,        
-    },
-    button: {
-        backgroundColor: '#7e41f6',
-        padding: 10,
-        borderRadius: 18,
-        marginBottom: 10,
-    },
-    buttonText: {
-        color: '#fff',
-        textAlign: 'center',
-        fontWeight: 'bold',
-    },
-});
 
 export default CadastroFornecedor;
