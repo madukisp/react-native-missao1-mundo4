@@ -6,8 +6,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import CadastroFornecedor from './src/components/CadastroFornecedor';
 import TelaInicial from './src/components/TelaInicial';
 import ListagemFornecedores from './src/components/ListagemFornecedores';
-import FornecedorProfile from './src/components/FornecedorProfile';
 import { styles, colors } from './src/components/styles';
+import PerfilFornecedor from './src/components/PerfilFornecedor';
 
 
 
@@ -21,9 +21,10 @@ const App = () => {
           initialRouteName="TelaInicial"
           screenOptions={{
             headerStyle: {
-              backgroundColor: colors.background, 
+              backgroundColor: colors.background,
+              
             },
-            headerTintColor: colors.text, 
+            headerTintColor: colors.text,
             headerTitleStyle: {
               fontWeight: 'bold',
             },
@@ -44,10 +45,10 @@ const App = () => {
             component={ListagemFornecedores}
             options={{ title: 'Listagem de Fornecedores' }}
           />
-          {}
+          { }
           <Stack.Screen
             name="PerfilFornecedor"
-            component={FornecedorProfile}
+            component={PerfilFornecedor}
             options={{ title: 'Perfil do Fornecedor' }}
           />
         </Stack.Navigator>

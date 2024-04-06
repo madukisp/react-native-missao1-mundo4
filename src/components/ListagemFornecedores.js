@@ -1,75 +1,57 @@
 import React, { useContext } from 'react';
-import { SectionList, View, Text, Image, TouchableOpacity, Alert } from 'react-native';
+import { SectionList, View, Text, Image, TouchableOpacity } from 'react-native';
 import { FornecedoresContext } from '../context/FornecedoresContext';
 import { styles } from './styles';
 
 const ListagemFornecedores = ({ navigation }) => {
-  const { fornecedores, excluirFornecedor } = useContext(FornecedoresContext);
+  const { fornecedores } = useContext(FornecedoresContext);
 
   
-  const sectionData = Object.entries(
-    fornecedores.reduce((acc, fornecedor) => {
-      const initial = fornecedor.nome[0].toUpperCase();
-      if (!acc[initial]) {
-        acc[initial] = [];
-      }
-      acc[initial].push(fornecedor);
-      return acc;
-    }, {})
-  )
+  const sections = Object.entries(fornecedores.reduce((acc, fornecedor) => {
+    const initial = fornecedor.nome[0].toUpperCase();
+    if (!acc[initial]) acc[initial] = [];
+    acc[initial].push(fornecedor);
+    return acc;
+  }, {}))
   .sort(([a], [b]) => a.localeCompare(b))
   .map(([title, data]) => ({ title, data }));
 
-  
-  const handleAlterarPress = fornecedor => {
-    navigation.navigate('CadastroFornecedor', { fornecedor });
-  };
-
-  
-  const handleExcluirPress = id => {
-    Alert.alert(
-      'Excluir Fornecedor',
-      'Tem certeza que deseja excluir este fornecedor?',
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        { text: 'Excluir', onPress: () => excluirFornecedor(id), style: 'destructive' }
-      ]
-    );
+  const handlePressItem = (fornecedor) => {
+    navigation.navigate('PerfilFornecedor', { fornecedor });
   };
 
   
   const renderItem = ({ item }) => (
-    <View style={styles.itemContainer}>
-      <View style={styles.fornecedorImagemWrapper}>
-        <View style={styles.fornecedorImagemBorder}>
-          <Image source={{ uri: item.imagemUri }} style={styles.imagemFornecedor} />
-        </View>
-      </View>
+    <TouchableOpacity
+      onPress={() => handlePressItem(item)}
+      style={styles.itemContainer}
+    >
+      <Image source={{ uri: item.imagemUri }} style={styles.imagemFornecedor} />
       <View style={styles.infoContainer}>
         <Text style={styles.nome}>{item.nome}</Text>
-        <Text style={styles.texto}>{item.endereco}</Text>
-        <Text style={styles.texto}>{item.telefone}</Text>
+        <Text style={styles.texto}>{item.endereco || 'Endereço não disponível'}</Text>
+        <Text style={styles.texto}>{item.telefone || 'Telefone não disponível'}</Text>
       </View>
-      <View style={styles.buttonGroup}>
-        <TouchableOpacity style={styles.botaoAlterar} onPress={() => handleAlterarPress(item)}>
-          <Text style={styles.botaoTexto}>Alterar</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.botaoExcluir} onPress={() => handleExcluirPress(item.id)}>
-          <Text style={styles.botaoTexto}>Excluir</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    </TouchableOpacity>
   );
 
+  
+  const renderSectionHeader = ({ section: { title } }) => (
+    <Text style={styles.sectionHeader}>{title}</Text>
+  );
+
+  
+  const keyExtractor = (item) => item.id.toString();
+
   return (
-    <SectionList
-      sections={sectionData}
-      renderItem={renderItem}
-      renderSectionHeader={({ section: { title } }) => (
-        <Text style={styles.sectionHeader}>{title}</Text>
-      )}
-      keyExtractor={(item, index) => `list-item-${item.id}-${index}`}
-    />
+    <View style={{ flex: 1 }}>
+      <SectionList
+        sections={sections}
+        renderItem={renderItem}
+        renderSectionHeader={renderSectionHeader}
+        keyExtractor={keyExtractor}
+      />
+    </View>
   );
 };
 

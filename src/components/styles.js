@@ -11,6 +11,22 @@ export const colors = {
 };
 
 export const styles = StyleSheet.create({
+  addButton: {
+    position: 'absolute',
+    right: 30,
+    bottom: 30,
+    backgroundColor: '#ff69b4',
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 4,
+  },
+  addButtonText: {
+    fontSize: 30,
+    color: '#fff',
+  },
   actionButton: {
     alignItems: 'center',
     backgroundColor: '#f0f0f0',
@@ -92,7 +108,12 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 22,
-    backgroundColor: "rgba(0,0,0,0.5)", // Fundo semitransparente
+    backgroundColor: "rgba(0,0,0,0.5)", 
+  },
+  contactImage: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
   },
   contactItem: {
     backgroundColor: 'white',
@@ -101,11 +122,11 @@ export const styles = StyleSheet.create({
     borderBottomColor: '#ccc',
   },
   contactName: {
-    fontSize: 18, // Tamanho maior para os nomes
+    fontSize: 18, 
     fontWeight: 'bold',
   },
   contactNumber: {
-    fontSize: 16, // Tamanho um pouco menor para os números de telefone
+    fontSize: 16, 
     color: 'gray',
   },
   container: {

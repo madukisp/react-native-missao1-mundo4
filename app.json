@@ -15,12 +15,20 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "permissions": [
+        "READ_CONTACTS", 
+        "WRITE_CONTACTS"
+      ]
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#ffffff",
+        "permissions": [
+          "READ_CONTACTS", 
+          "WRITE_CONTACTS"
+        ]
       }
     },
     "web": {
