@@ -11,6 +11,7 @@ import PerfilFornecedor from './src/components/PerfilFornecedor';
 
 
 
+
 const Stack = createStackNavigator();
 
 const App = () => {

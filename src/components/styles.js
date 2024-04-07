@@ -274,4 +274,21 @@ export const styles = StyleSheet.create({
     marginVertical: 20,
     textAlign: 'center',
   },
+  picker: {
+    height: 50,
+    width: '100%',
+  },
+  label: {
+    fontSize: 16,
+    color: 'black',
+    marginTop: 10,
+  },
+  inputFiltro: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+    
+  },
+
 });

@@ -1,4 +1,3 @@
-
 import React, { createContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -11,9 +10,9 @@ export const FornecedoresProvider = ({ children }) => {
     carregarFornecedores();
   }, []);
 
-  const salvarFornecedores = async () => {
+  const salvarFornecedores = async (updatedFornecedores) => {
     try {
-      const jsonValue = JSON.stringify(fornecedores);
+      const jsonValue = JSON.stringify(updatedFornecedores);
       await AsyncStorage.setItem('@fornecedores', jsonValue);
     } catch (e) {
       console.error('Erro ao salvar os fornecedores', e);
@@ -31,7 +30,14 @@ export const FornecedoresProvider = ({ children }) => {
 
   const adicionarFornecedor = (novoFornecedor) => {
     setFornecedores(currentFornecedores => {
-      const updatedFornecedores = [...currentFornecedores, { ...novoFornecedor, id: Math.random().toString() }];
+      const updatedFornecedores = [
+        ...currentFornecedores,
+        {
+          ...novoFornecedor,
+          id: Math.random().toString(),
+          categoria: novoFornecedor.categoria || 'Sem Categoria', 
+        }
+      ];
       salvarFornecedores(updatedFornecedores);
       return updatedFornecedores;
     });
@@ -40,7 +46,7 @@ export const FornecedoresProvider = ({ children }) => {
   const atualizarFornecedor = (fornecedorAtualizado) => {
     setFornecedores(currentFornecedores => {
       const updatedFornecedores = currentFornecedores.map(fornecedor => 
-        fornecedor.id === fornecedorAtualizado.id ? fornecedorAtualizado : fornecedor
+        fornecedor.id === fornecedorAtualizado.id ? { ...fornecedor, ...fornecedorAtualizado } : fornecedor
       );
       salvarFornecedores(updatedFornecedores);
       return updatedFornecedores;
@@ -61,4 +67,3 @@ export const FornecedoresProvider = ({ children }) => {
     </FornecedoresContext.Provider>
   );
 };
-
