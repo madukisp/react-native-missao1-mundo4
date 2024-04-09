@@ -109,6 +109,14 @@ const CadastroFornecedor = ({ navigation, route }) => {
       adicionarFornecedor(novoFornecedor);
     }
 
+    // Resetar o formulário para os valores padrões
+    setNome('');
+    setEndereco('');
+    setTelefone('');
+    setCategoria('');
+    setImagemUri('');
+    setModalVisible(false);
+
     navigation.navigate('ListagemFornecedores');
   };
 
@@ -156,9 +164,7 @@ const CadastroFornecedor = ({ navigation, route }) => {
           </TouchableOpacity>
           {imagemUri ? (
             <Image source={{ uri: imagemUri }} style={styles.imagemEscolhida} />
-          ) : (
-            <Text style={styles.textoSelecaoImagem}>Selecione uma imagem</Text>
-          )}
+          ) : null}
           <TouchableOpacity style={styles.botao} onPress={handleSalvar}>
             <Text style={styles.textoBotaoSalvar}>Cadastrar Fornecedor</Text>
           </TouchableOpacity>
