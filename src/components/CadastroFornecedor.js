@@ -8,18 +8,19 @@ import {
   Alert,
   Modal,
   FlatList,
-  ScrollView
+  ScrollView,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as Contacts from 'expo-contacts';
 import { FornecedoresContext } from '../context/FornecedoresContext';
-import { styles } from './styles';
 import { Picker } from '@react-native-picker/picker';
+import styles from '../styles/CadastroFornecedorStyles';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const CadastroFornecedor = ({ navigation, route }) => {
   const { adicionarFornecedor, atualizarFornecedor } = useContext(FornecedoresContext);
   const fornecedorParaEditar = route.params?.fornecedor;
-  
+
   const [nome, setNome] = useState(fornecedorParaEditar?.nome || '');
   const [endereco, setEndereco] = useState(fornecedorParaEditar?.endereco || '');
   const [telefone, setTelefone] = useState(fornecedorParaEditar?.telefone || '');
@@ -35,15 +36,26 @@ const CadastroFornecedor = ({ navigation, route }) => {
   }, [fornecedorParaEditar, navigation]);
 
   const escolherImagem = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 1,
-    });
+    const permissionsResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (permissionsResult.granted === false) {
+      alert('Permissão de acesso à galeria é necessária!');
+      return;
+    }
 
-    if (!result.cancelled) {
-      setImagemUri(result.uri);
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing: true,
+        aspect: [1, 1],
+        quality: 1,
+      });
+
+      if (!result.cancelled && result.assets) {
+        setImagemUri(result.assets[0].uri);
+      }
+    } catch (error) {
+      console.log(error);
+      Alert.alert('Erro', 'Não foi possível selecionar a imagem.');
     }
   };
 
@@ -81,9 +93,9 @@ const CadastroFornecedor = ({ navigation, route }) => {
     }
 
     const categoriaCapitalizada = categoria.charAt(0).toUpperCase() + categoria.slice(1);
-
+    const id = fornecedorParaEditar?.id || Date.now().toString();
     const novoFornecedor = {
-      id: fornecedorParaEditar?.id || Date.now().toString(),
+      id,
       nome,
       endereco,
       telefone,
@@ -97,84 +109,88 @@ const CadastroFornecedor = ({ navigation, route }) => {
       adicionarFornecedor(novoFornecedor);
     }
 
-    navigation.goBack();
+    navigation.navigate('ListagemFornecedores');
   };
 
   return (
-    <ScrollView style={styles.scrollView}>
-      <View style={styles.container}>
-        <Text style={styles.titulo}>Cadastro de Fornecedor</Text>
-        <TextInput
-          placeholder="Nome do Fornecedor"
-          value={nome}
-          onChangeText={setNome}
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Endereço (opcional)"
-          value={endereco}
-          onChangeText={setEndereco}
-          style={styles.input}
-        />
-        <TextInput
-          placeholder="Telefone"
-          value={telefone}
-          onChangeText={setTelefone}
-          keyboardType="phone-pad"
-          style={styles.input}
-        />
-        <Text style={styles.label}>Categoria:</Text>
-        <Picker
-          selectedValue={categoria}
-          onValueChange={(itemValue) => setCategoria(itemValue)}
-          style={styles.picker}
-        >
-          <Picker.Item label="Sem Categoria" value="" />
-          <Picker.Item label="Eletrônicos" value="eletronicos" />
-          <Picker.Item label="Vestuário" value="vestuario" />
-          <Picker.Item label="Alimentação" value="alimentacao" />
-          <Picker.Item label="Outros" value="outros" />
-        </Picker>
-        <TouchableOpacity style={styles.botao} onPress={abrirContatos}>
-          <Text style={styles.textoBotao}>Escolher da Agenda</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.botao} onPress={escolherImagem}>
-          <Text style={styles.textoBotao}>Escolher Imagem</Text>
-        </TouchableOpacity>
-        {imagemUri ? (
-          <Image source={{ uri: imagemUri }} style={styles.imagemEscolhida} />
-        ) : null}
-        <TouchableOpacity style={styles.botao} onPress={handleSalvar}>
-          <Text style={styles.textoBotaoSalvar}>Cadastrar Fornecedor</Text>
-        </TouchableOpacity>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => setModalVisible(false)}
-        >
-          <View style={styles.modalView}>
-            <FlatList
-              data={contatos}
-              keyExtractor={(item) => item.id.toString()}
-              renderItem={({ item }) => (
-                <TouchableOpacity onPress={() => selecionarContato(item)} style={styles.modalItem}>
-                  {item.imageAvailable && item.image?.uri ? (
-                    <Image source={{ uri: item.image.uri }} style={styles.contactImage} />
-                  ) : (
-                    <View style={styles.placeholderImage}></View>
-                  )}
-                  <Text style={styles.contactName}>{item.name}</Text>
-                  {item.phoneNumbers && (
-                    <Text style={styles.contactNumber}>{item.phoneNumbers[0].number}</Text>
-                  )}
-                </TouchableOpacity>
-              )}
-            />
-          </View>
-        </Modal>
-      </View>
-    </ScrollView>
+    <SafeAreaView style={styles.safeArea}>
+      <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+        <View style={styles.container}>
+          <Text style={styles.titulo}>Cadastro de Fornecedor</Text>
+          <TextInput
+            placeholder="Nome do Fornecedor"
+            value={nome}
+            onChangeText={setNome}
+            style={styles.input}
+          />
+          <TextInput
+            placeholder="Endereço (opcional)"
+            value={endereco}
+            onChangeText={setEndereco}
+            style={styles.input}
+          />
+          <TextInput
+            placeholder="Telefone"
+            value={telefone}
+            onChangeText={setTelefone}
+            keyboardType="phone-pad"
+            style={styles.input}
+          />
+          <Text style={styles.label}>Categoria:</Text>
+          <Picker
+            selectedValue={categoria}
+            onValueChange={setCategoria}
+            style={styles.picker}
+          >
+            <Picker.Item label="Sem Categoria" value="" />
+            <Picker.Item label="Eletrônicos" value="eletronicos" />
+            <Picker.Item label="Vestuário" value="vestuario" />
+            <Picker.Item label="Alimentação" value="alimentacao" />
+            <Picker.Item label="Outros" value="outros" />
+          </Picker>
+          <TouchableOpacity style={styles.botao} onPress={abrirContatos}>
+            <Text style={styles.textoBotao}>Escolher da Agenda</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.botao} onPress={escolherImagem}>
+            <Text style={styles.textoBotao}>Escolher Imagem</Text>
+          </TouchableOpacity>
+          {imagemUri ? (
+            <Image source={{ uri: imagemUri }} style={styles.imagemEscolhida} />
+          ) : (
+            <Text style={styles.textoSelecaoImagem}>Selecione uma imagem</Text>
+          )}
+          <TouchableOpacity style={styles.botao} onPress={handleSalvar}>
+            <Text style={styles.textoBotaoSalvar}>Cadastrar Fornecedor</Text>
+          </TouchableOpacity>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => setModalVisible(false)}
+          >
+            <View style={styles.modalView}>
+              <FlatList
+                data={contatos}
+                keyExtractor={(item) => item.id.toString()}
+                renderItem={({ item }) => (
+                  <TouchableOpacity onPress={() => selecionarContato(item)} style={styles.modalItem}>
+                    {item.imageAvailable && item.image?.uri ? (
+                      <Image source={{ uri: item.image.uri }} style={styles.contactImage} />
+                    ) : (
+                      <View style={styles.placeholderImage} />
+                    )}
+                    <Text style={styles.contactName}>{item.name}</Text>
+                    {item.phoneNumbers && (
+                      <Text style={styles.contactNumber}>{item.phoneNumbers[0].number}</Text>
+                    )}
+                  </TouchableOpacity>
+                )}
+              />
+            </View>
+          </Modal>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 

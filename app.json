@@ -7,32 +7,37 @@
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/logo.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#041f1f"
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
       "supportsTablet": true,
-      "permissions": [
-        "READ_CONTACTS", 
-        "WRITE_CONTACTS"
-      ]
+      "permissions": {
+        "contacts": {
+          "read": "We need this permission to read contacts from your phone",
+          "write": "We need this permission to write contacts to your phone"
+        }
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff",
-        "permissions": [
-          "READ_CONTACTS", 
-          "WRITE_CONTACTS"
-        ]
-      }
+        "backgroundColor": "#ffffff"
+      },
+      "permissions": [
+        "android.permission.READ_CONTACTS",
+        "android.permission.WRITE_CONTACTS"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "expo-font"
+    ]
   }
 }
